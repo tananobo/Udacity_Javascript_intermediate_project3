@@ -105,4 +105,4 @@ Accelerate a car
 - Returns nothing
 
 To complete the race logic, find all the TODO tags in index.js and read the instructions.
-# Udacity_Javascript_intermediate_project3
+# Udacity_Javascript_intermediate_project3 by tananobo
