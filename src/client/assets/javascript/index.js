@@ -83,11 +83,9 @@ async function handleCreateRace() {
 	const track_id = store.track_id
 	// const race = TODO - invoke the API call to create the race, then save the result
 	const race = await createRace(player_id, track_id)
-	console.log("race information:", race)
 	// TODO - update the store with the race id
 	// For the API to work properly, the race id should be race id - 1
 	store.race_id = race.ID - 1
-	console.log(store)
 	// render starting UI
 	renderAt('#race', renderRaceStartView(race.Track, race.Cars))
 	// The race has been created, now start the countdown
@@ -103,7 +101,6 @@ async function handleCreateRace() {
 
 function runRace(raceID) {
 	return new Promise(resolve => {
-		console.log("I'm in runRace_Promise")
 	// TODO - use Javascript's built in setInterval method to get race info every 500ms
 		const raceInterval = setInterval(async () => {
 		/* 
@@ -112,7 +109,6 @@ function runRace(raceID) {
 		renderAt('#leaderBoard', raceProgress(res.positions))
 		*/
 		const race_info = await getRace(raceID)
-		// console.log(race_info.status,race_info.positions)
 		if (race_info.status === "in-progress") {
 			renderAt('#leaderBoard', raceProgress(race_info.positions))
 		}
@@ -128,7 +124,6 @@ function runRace(raceID) {
 			renderAt('#race', resultsView(race_info.positions)) // to render the results view
 			reslove(race_info) // resolve the promise
 		}
-		// console.log("current race status:: ", race_info)
 		},500)
 	})
 	// remember to add error handling for the Promise
@@ -298,16 +293,8 @@ function resultsView(positions) {
 }
 
 function raceProgress(positions) {
-	// let userPlayer = positions.find(e => e.id === store.player_id)
-	let userPlayer = positions[0]
-	console.log(positions)
-	for (const key in positions) {
-		console.log(key)
-		console.log(positions[key])
-		if (positions[key].id === store.player_id) {
-			userPlayer = positions[key]
-		}
-	}
+	let userPlayer = positions.find(e => e.id === parseInt(store.player_id))
+
 	userPlayer.driver_name += " (you)"
 
 	positions = positions.sort((a, b) => (a.segment > b.segment) ? -1 : 1)
